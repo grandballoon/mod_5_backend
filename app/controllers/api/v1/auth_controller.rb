@@ -1,5 +1,5 @@
 class Api::V1::AuthController < ApplicationController
-  skip_before_action :authorized, only: [:create]
+  skip_before_action :authorized, only: [:create, :logout]
 
   def create
     @user = User.find_by(username: user_login_params[:username])
@@ -14,10 +14,8 @@ class Api::V1::AuthController < ApplicationController
     end
   end
 
-  def destroy
-    byebug
+  def logout
     @user = User.find_by(username: user_login_params[:username])
-
     @user.token = ''
     render json: {user: UserSerializer.new(@user)}, status: :accepted
   end
