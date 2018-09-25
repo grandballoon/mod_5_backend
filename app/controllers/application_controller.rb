@@ -24,11 +24,11 @@ class ApplicationController < ActionController::API
     if decoded_token
       user_id = decoded_token[0]['user_id']
       @user = User.find_by(id: user_id)
-      if @user.token == auth_header.split(' ')[1]
-        @user
-      else
-        nil
-      end
+      @user
+      # if @user.token == auth_header.split(' ')[1]
+      # else
+      #   nil
+      # end
     end
   end
 
@@ -37,6 +37,7 @@ class ApplicationController < ActionController::API
   end
 
   def authorized
+
     render json: { message: "please log in"}, status: :unauthorized unless logged_in?
   end
 end

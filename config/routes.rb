@@ -6,6 +6,8 @@ Rails.application.routes.draw do
      post '/login', to: 'auth#create'
      get '/profile', to: 'users#profile'
      post '/logout', to: 'auth#logout'
+     post '/subscribe', to: 'users#subscribe'
+     post '/unsubscribe', to: 'users#unsubscribe'
      resources :facts
    end
  end

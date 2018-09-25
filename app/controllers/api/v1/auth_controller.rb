@@ -20,10 +20,14 @@ class Api::V1::AuthController < ApplicationController
     render json: {user: UserSerializer.new(@user)}, status: :accepted
   end
 
+
+
   private
 
   def user_login_params
     params.require(:user).permit(:username, :password)
   end
+
+
 
 end
