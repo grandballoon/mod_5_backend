@@ -53,3 +53,5 @@ gem "faker", "~> 1.9"
 gem "figaro", "~> 1.1"
 
 gem 'twilio-ruby'
+
+gem 'delayed_job_active_record'

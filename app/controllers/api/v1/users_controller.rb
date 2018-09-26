@@ -9,7 +9,6 @@ class Api::V1::UsersController < ApplicationController
     @user = User.create(user_params)
     if @user.valid?
       render json: { user: UserSerializer.new(@user) }, status: :created
-      TwilioTextMessenger.new('you have created a user').call
     else
       render json: { error: 'failed to create user' }, status: :not_acceptable
     end
@@ -25,6 +24,7 @@ class Api::V1::UsersController < ApplicationController
     @user = User.find_by(id: subscription_params[:user_id])
     if !@user.facts.include?(@fact)
       @user.facts << @fact
+      TwilioTextMessenger.new(@fact.description).delay.call
     end
     if @user.save
       render json: { user: UserSerializer.new(@user)}, status: :accepted
@@ -38,7 +38,7 @@ class Api::V1::UsersController < ApplicationController
     @user = User.find_by(id: subscription_params[:user_id])
     @user.facts.destroy(@fact)
     @user.save
-    render json: { user: UserSeralizer.new(@user)}, status: :accepted
+    render json: { user: UserSerializer.new(@user)}, status: :accepted
     # if
 
     # else
@@ -48,7 +48,7 @@ class Api::V1::UsersController < ApplicationController
 
   private
   def user_params
-    params.require(:user).permit(:username, :password, :bio, :facts, :phone_number)
+    params.require(:user).permit(:username, :password, :bio, :facts, :email, :phone_number)
   end
 
   def subscription_params
