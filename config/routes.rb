@@ -8,7 +8,9 @@ Rails.application.routes.draw do
      post '/logout', to: 'auth#logout'
      post '/subscribe', to: 'users#subscribe'
      post '/unsubscribe', to: 'users#unsubscribe'
+
      resources :facts
    end
  end
+  get '/voice', to: 'twilio#voice'
 end
