@@ -1,8 +1,9 @@
 class TwilioTextMessenger
   attr_reader :message
 
-  def initialize(message)
+  def initialize(message, phone)
     @message = message
+    @phone = phone
 
   end
 
@@ -11,7 +12,7 @@ class TwilioTextMessenger
       client = Twilio::REST::Client.new
       client.messages.create({
         from: ENV["phone_number"],
-        to: +19144713513,
+        to: @phone,
         body: "#{@message}"
       })
   end
