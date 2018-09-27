@@ -20,11 +20,15 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def subscribe
+    puts "you just hit subscribe"
     @fact = Fact.find_by(id: subscription_params[:fact_id])
     @user = User.find_by(id: subscription_params[:user_id])
     if !@user.facts.include?(@fact)
       @user.facts << @fact
-      TwilioTextMessenger.new(@fact.description).delay.call
+      # @messenger = TwilioTextMessenger.new(@fact.description)
+      # @messenger.call
+      TextUserJob.set(wait: 10.seconds).perform_later @fact.description
+      TextUserJob.set(wait: 20.seconds).perform_later @fact.description
     end
     if @user.save
       render json: { user: UserSerializer.new(@user)}, status: :accepted
@@ -34,6 +38,7 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def unsubscribe
+    puts "you just hit unsubscribe"
     @fact= Fact.find_by(id: subscription_params[:fact_id])
     @user = User.find_by(id: subscription_params[:user_id])
     @user.facts.destroy(@fact)
