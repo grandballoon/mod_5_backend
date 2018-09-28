@@ -41,19 +41,19 @@ class Api::V1::UsersController < ApplicationController
     end
   end
 
-  def unsubscribe
-    puts "you just hit unsubscribe"
-    @fact= Fact.find_by(id: subscription_params[:fact_id])
-    @user = User.find_by(id: subscription_params[:user_id])
-    @user.facts.destroy(@fact)
-    @user.save
-    render json: { user: UserSerializer.new(@user)}, status: :accepted
-    # if
-
-    # else
-    #   render json: { error: 'could not complete request'}, status: :not_acceptable
-    # end
-  end
+  # def unsubscribe
+  #   puts "you just hit unsubscribe"
+  #   @fact= Fact.find_by(id: subscription_params[:fact_id])
+  #   @user = User.find_by(id: subscription_params[:user_id])
+  #   @user.facts.destroy(@fact)
+  #   @user.save
+  #   render json: { user: UserSerializer.new(@user)}, status: :accepted
+  #   # if
+  #
+  #   # else
+  #   #   render json: { error: 'could not complete request'}, status: :not_acceptable
+  #   # end
+  # end
 
   private
   def user_params
