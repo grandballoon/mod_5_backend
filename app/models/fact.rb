@@ -3,4 +3,5 @@ class Fact < ApplicationRecord
 
   has_many :subscriptions
   has_many :users, through: :subscriptions
+  belongs_to :category
 end

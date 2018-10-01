@@ -10,10 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_26_194748) do
+ActiveRecord::Schema.define(version: 2018_10_01_153438) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "categories", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "delayed_jobs", force: :cascade do |t|
     t.integer "priority", default: 0, null: false
@@ -36,6 +42,8 @@ ActiveRecord::Schema.define(version: 2018_09_26_194748) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "verified", default: false
+    t.bigint "category_id"
+    t.index ["category_id"], name: "index_facts_on_category_id"
   end
 
   create_table "subscriptions", force: :cascade do |t|
@@ -58,4 +66,5 @@ ActiveRecord::Schema.define(version: 2018_09_26_194748) do
     t.string "phone_number"
   end
 
+  add_foreign_key "facts", "categories"
 end

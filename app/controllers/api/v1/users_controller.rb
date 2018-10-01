@@ -9,6 +9,7 @@ class Api::V1::UsersController < ApplicationController
     @user = User.create(user_params)
     @user.phone_number = convert_to_e164(@user.phone_number)
     @user.save
+    byebug
     if @user.valid?
       render json: { user: UserSerializer.new(@user) }, status: :created
     else
@@ -32,7 +33,9 @@ class Api::V1::UsersController < ApplicationController
     if !@user.facts.include?(@fact)
       @user.facts << @fact
       TextUserJob.set(wait: 1.seconds).perform_later(@fact.description, @user.phone_number)
-      # TextUserJob.set(wait: 20.seconds).perform_later @fact.description
+      TextUserJob.set(wait: 10.days).perform_later(@fact.description, @user.phone_numer)
+      TextUserJob.set(wait: 20.days).perform_later(@fact.description, @user.phone_number)
+      TextUserJob.set(wait: 30.days).perform_later(@fact.description, @user.phone_number)
     end
     if @user.save
       render json: { user: UserSerializer.new(@user)}, status: :accepted
