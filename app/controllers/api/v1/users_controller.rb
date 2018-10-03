@@ -9,7 +9,6 @@ class Api::V1::UsersController < ApplicationController
     @user = User.create(user_params)
     @user.phone_number = convert_to_e164(@user.phone_number)
     @user.save
-    byebug
     if @user.valid?
       render json: { user: UserSerializer.new(@user) }, status: :created
     else
@@ -27,13 +26,13 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def subscribe
-    puts "you just hit subscribe"
+    puts "you just hit subscribe, the time is #{Time.now}"
     @fact = Fact.find_by(id: subscription_params[:fact_id])
     @user = User.find_by(id: subscription_params[:user_id])
     if !@user.facts.include?(@fact)
       @user.facts << @fact
-      TextUserJob.set(wait: 1.seconds).perform_later(@fact.description, @user.phone_number)
-      TextUserJob.set(wait: 10.days).perform_later(@fact.description, @user.phone_numer)
+      TwilioTextMessenger.new(@fact.description, @user.phone_number).call
+      TextUserJob.set(wait: 10.days).perform_later(@fact.description, @user.phone_number)
       TextUserJob.set(wait: 20.days).perform_later(@fact.description, @user.phone_number)
       TextUserJob.set(wait: 30.days).perform_later(@fact.description, @user.phone_number)
     end

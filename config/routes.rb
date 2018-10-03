@@ -7,7 +7,7 @@ Rails.application.routes.draw do
      get '/profile', to: 'users#profile'
      post '/logout', to: 'auth#logout'
      post '/subscribe', to: 'users#subscribe'
-     # post '/unsubscribe', to: 'users#unsubscribe'
+     resources :categories, only: [:index]
 
      resources :facts
    end
