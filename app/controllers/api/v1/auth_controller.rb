@@ -6,14 +6,11 @@ class Api::V1::AuthController < ApplicationController
     puts "user is #{@user}"
     puts "the user's username is #{user_login_params[:username]}
     if @user && @user.authenticate(user_login_params[:password])
-      puts('inside authentication case')
       token = encode_token(user_id: @user.id)
-      puts(token)
       @user.token = token
       @user.save
       render json: {user: UserSerializer.new(@user), jwt:token}, status: :accepted
     else
-      puts('inside inauthentic case')
       render json: {message: 'invalid username or password'}, status: :unauthorized
     end
   end
