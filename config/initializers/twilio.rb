@@ -1,5 +1,5 @@
 Twilio.configure do |config|
-  config.account_sid = ENV["twilio_sid"]
-  config.auth_token = ENV["twilio_auth_token"]
+  config.account_sid = ENV["TWILIO_SID"]
+  config.auth_token = ENV["AUTH_TOKEN"]
 
 end
