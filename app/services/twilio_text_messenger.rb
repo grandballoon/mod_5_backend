@@ -11,7 +11,7 @@ class TwilioTextMessenger
   def call
       client = Twilio::REST::Client.new
       client.messages.create({
-        from: ENV["phone_number"],
+        from: ENV["PHONE_NUMBER"],
         to: @phone,
         body: "#{@message}"
       })
