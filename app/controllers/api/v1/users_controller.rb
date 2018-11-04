@@ -26,11 +26,15 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def subscribe
-    puts "you just hit subscribe, the time is #{Time.now}"
+    puts "inside subscribe"
     @fact = Fact.find_by(id: subscription_params[:fact_id])
     @user = User.find_by(id: subscription_params[:user_id])
+    puts "user is #{@user}"
+    puts "fact is #{@fact}"
     if !@user.facts.include?(@fact)
+      puts "user does not have fact"
       @user.facts << @fact
+      puts "fact added to user"
       TwilioTextMessenger.new(@fact.description, @user.phone_number).call
       TextUserJob.set(wait: 10.days).perform_later(@fact.description, @user.phone_number)
       TextUserJob.set(wait: 20.days).perform_later(@fact.description, @user.phone_number)

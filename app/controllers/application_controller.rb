@@ -24,10 +24,8 @@ class ApplicationController < ActionController::API
 
   def current_user
     if decoded_token
-      puts "token decoded"
       user_id = decoded_token[0]['user_id']
       @user = User.find_by(id: user_id)
-      puts @user
       if @user.token == auth_header.split(' ')[1]
         @user
       else
