@@ -6,6 +6,6 @@ Full YouTube demo here: https://youtu.be/VqS5TqTSGkE
 
 Heroku deployment here: https://factoyd.herokuapp.com/ 
 
-Backend repo here: https://github.com/grandballoon/mod_5_backend
+Frontend repo here: https://github.com/grandballoon/mod_5_frontend
 
 Happy learning!
